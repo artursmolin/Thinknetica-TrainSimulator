@@ -10,7 +10,7 @@ if d > 0
 	y = (- b - c) / (2 * a)
 	puts "Дискриминант: #{d}, x:#{x}, y:#{y}"
 elsif d == 0 
-	x = - b.to_i / (2 * a)
+	x = - b / (2 * a)
 	y = x
 	puts "Дискриминант: #{d}, x,y:#{x} "
 else 
