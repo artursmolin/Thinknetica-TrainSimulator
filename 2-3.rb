@@ -1,11 +1,7 @@
-n = 0
-until n <= 100 do
-  def fibonacci(n)
-    if n < 3
-        1
-    else
-        fibonacci(n - 1) + fibonacci(n - 2)
-    end
-  end
+array = [ 0, 1 ]
 
-puts "#{fibonacci(n)} "
+while array.last < 100
+  array <<  array[- 1] + array[- 2] 
+end
+
+puts array
