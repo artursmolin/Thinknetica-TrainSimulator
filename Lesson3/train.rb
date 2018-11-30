@@ -2,22 +2,22 @@ class Train
   attr_reader :speed
 
   def initialize(train_number,train_type,quantity)
-	@train_number = train_number
-	@train_type = train_type
-	@quantity = quantity.to_f
-	@speed = 0
+    @train_number = train_number
+    @train_type = train_type
+    @quantity = quantity.to_f
+    @speed = 0
   end
 
   def start(speed)
-	@speed = speed
+    @speed = speed
   end
 
   def current_speed
-	puts "Текущая скорость:#{@speed} км/ч"
+    puts "Текущая скорость:#{@speed} км/ч"
   end
 
   def stop
-	@speed = 0
+    @speed = 0
   end
 
   def carriage_quantity
@@ -25,16 +25,16 @@ class Train
   end
 
   def add_carriage
-	if @speed <= 0
-	  @quantity += 1
-	else puts "Поезд на ходу"
+    if @speed <= 0
+      @quantity += 1
+    else puts "Поезд на ходу"
   end
 
   def remove_carriage
     if @speed <= 0
-	  @quantity -= 1
-	else puts "Поезд на ходу"
-	end
+      @quantity -= 1
+    else puts "Поезд на ходу"
+    end
   end
 
   def set_route(route)
