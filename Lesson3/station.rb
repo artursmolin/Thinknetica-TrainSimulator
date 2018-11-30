@@ -2,7 +2,7 @@ class Station
   attr_reader :station_list
 
   def initialize(station_name)
-	@station_name = station_name
+    @station_name = station_name
     @station_list = []
   end
 
@@ -11,7 +11,7 @@ class Station
   end
 
   def train_left(train_number)
-	@station_list.delete("#{@train_number}")
+    @station_list.delete("#{@train_number}")
   end
 
   def trains_by_type(type)
@@ -19,6 +19,6 @@ class Station
   end
 
   def station_list
-	puts @station_list
+    puts @station_list
   end
 end
