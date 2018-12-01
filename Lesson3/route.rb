@@ -1,3 +1,6 @@
+require 'train.rb'
+require 'station.rb'
+
 class Route
   attr_reader :route_list
 		
