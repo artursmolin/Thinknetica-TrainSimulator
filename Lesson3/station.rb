@@ -1,5 +1,5 @@
-load 'route.rb'
-load 'train.rb'
+require './route.rb'
+require './train.rb'
 class Station
   attr_reader :station_list
 
@@ -13,7 +13,7 @@ class Station
   end
 
   def train_left(train_number)
-    @station_list.delete("#{@train_number}")
+	  @station_list.delete("#{@train_number}")
   end
 
   def trains_by_type(type)
@@ -21,6 +21,6 @@ class Station
   end
 
   def station_list
-    puts @station_list
+	  puts @station_list
   end
 end

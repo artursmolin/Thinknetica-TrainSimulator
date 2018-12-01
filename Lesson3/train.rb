@@ -1,5 +1,5 @@
-load 'route.rb'
-load 'station.rb'
+require './route.rb'
+require './station.rb'
 class Train 
   attr_reader :speed
 
