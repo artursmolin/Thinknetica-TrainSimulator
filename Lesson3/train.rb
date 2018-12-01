@@ -1,3 +1,4 @@
+load 'route.rb'
 class Train 
   attr_reader :speed
 
