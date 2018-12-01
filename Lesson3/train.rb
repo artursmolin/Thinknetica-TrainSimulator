@@ -30,6 +30,7 @@ class Train
     if @speed <= 0
       @quantity += 1
     else puts "Поезд на ходу"
+    end
   end
 
   def remove_carriage
