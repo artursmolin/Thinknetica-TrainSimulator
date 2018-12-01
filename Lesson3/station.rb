@@ -1,5 +1,5 @@
-require 'route.rb'
-require 'train.rb'
+load 'route.rb'
+load 'train.rb'
 class Station
   attr_reader :station_list
 
