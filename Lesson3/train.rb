@@ -1,4 +1,5 @@
 load 'route.rb'
+load 'station.rb'
 class Train 
   attr_reader :speed
 
