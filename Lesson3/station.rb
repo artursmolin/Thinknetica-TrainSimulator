@@ -1,26 +1,26 @@
 require './route.rb'
 require './train.rb'
 class Station
-  attr_reader :station_list
+  attr_reader :station_list,:train
 
   def initialize(station_name)
     @station_name = station_name
-    @station_list = []
+    @trains = []
   end
 
-  def train_arrive(train_number)
-    @station_list << train_number
+  def train_arrive(train)
+    @trains << train
   end
 
-  def train_left(train_number)
-	  @station_list.delete("#{@train_number}")
+  def train_left(train)
+	  @trains.delete(train)
   end
 
   def trains_by_type(type)
-    @station_list.map { |train_number| train_number if train_number.type == type }
+    @trains.map { |train| train.type == type }
   end
 
-  def station_list
-	  puts @station_list
+  def trains
+	  puts @trains
   end
 end

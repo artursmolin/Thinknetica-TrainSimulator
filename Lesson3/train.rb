@@ -1,11 +1,11 @@
 require './route.rb'
 require './station.rb'
-class Train 
+class Train
   attr_reader :speed
 
-  def initialize(train_number,train_type,quantity)
-    @train_number = train_number
-    @train_type = train_type
+  def initialize(number,type,quantity)
+    @number = number
+    @type = type
     @quantity = quantity.to_f
     @speed = 0
   end
@@ -15,7 +15,7 @@ class Train
   end
 
   def current_speed
-    puts "Текущая скорость:#{@speed} км/ч"
+    @speed
   end
 
   def stop
@@ -43,22 +43,27 @@ class Train
   def set_route(route)
     @route = route
     @index_current_station = 0
+    current_station.train_arrive(self)
   end
 
   def move_forward
-    @index_current_station += 1 if @route.stations.size - 1 > @index_current_station
+    current_station.train_left(self)
+    @index_current_station += 1 if @route.route_list.size - 1 > @index_current_station
+    current_station.train_arrive(self)
   end
 
   def move_backward
+    current_station.train_left(self)
     @index_current_station -= 1 unless @index_current_station.zero?
+    current_station.train_arrive(self)
   end
 
   def previous_station
-    get_station_by_index @index_current_station - 1
+    station_by_index @index_current_station - 1
   end
 
   def current_station
-    get_station_by_index @index_current_station
+    station_by_index @index_current_station
   end
 
   def next_station
@@ -67,7 +72,6 @@ class Train
 
   def station_by_index(index)
     return nil if index < 0
-    @route.station_list[index]
+    @route.route_list[index]
   end
 end
-
