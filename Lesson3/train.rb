@@ -29,14 +29,16 @@ class Train
   def add_carriage
     if @speed <= 0
       @quantity += 1
-    else puts "Поезд на ходу"
+    else
+      puts "Поезд на ходу"
     end
   end
 
   def remove_carriage
     if @speed <= 0
       @quantity -= 1
-    else puts "Поезд на ходу"
+    else
+      puts "Поезд на ходу"
     end
   end
 
@@ -69,6 +71,8 @@ class Train
   def next_station
     station_by_index @index_current_station + 1
   end
+
+  protected
 
   def station_by_index(index)
     return nil if index < 0
