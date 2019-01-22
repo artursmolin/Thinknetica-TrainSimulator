@@ -1,9 +1,34 @@
+=begin
+Разделить поезда на два типа PassengerTrain и CargoTrain, сделать родителя для классов, который будет содержать общие методы и свойства
+Определить, какие методы могут быть помещены в private/protected и вынести их в такую секцию. В комментарии к методу обосновать, почему он был вынесен в private/protected
+Вагоны теперь делятся на грузовые и пассажирские (отдельные классы). К пассажирскому поезду можно прицепить только пассажирские, к грузовому - грузовые.
+При добавлении вагона к поезду, объект вагона должен передаваться как аругмент метода и сохраняться во внутреннем массиве поезда, в отличие от предыдущего задания, где мы считали только кол-во вагонов. Параметр конструктора "кол-во вагонов" при этом можно удалить.
+
+Добавить текстовый интерфейс:
+
+Создать программу в файле main.rb, которая будет позволять пользователю через текстовый интерфейс делать следующее:
+     - Создавать станции
+     - Создавать поезда
+     - Создавать маршруты и управлять станциями в нем (добавлять, удалять)
+     - Назначать маршрут поезду
+     - Добавлять вагоны к поезду
+     - Отцеплять вагоны от поезда
+     - Перемещать поезд по маршруту вперед и назад
+     - Просматривать список станций и список поездов на станции
+=end
+
+
 class Main
 
   def initialize
     @trains = []
     @stations = []
-    puts main_menu
+  end
+
+  def start
+    loop do
+      main_menu
+    end
   end
 
   def main_menu
@@ -54,15 +79,14 @@ class Main
       puts "Введите 2, вывести список текущих станций"
       choice = gets.chomp
       if choice == "1"
-        trains
+        puts @trains
       elsif choice == "2"
-        show_station
+        puts @stations
       end
     elsif choice == "0"
             main_menu
     elsif choice == "exit"
       exit
-      system("clear")
     end
   end
 
@@ -78,23 +102,23 @@ class Main
     carriage = gets.chomp
     puts "Выберите тип позда: Passenger или Cargo"
     type = gets.chomp
-    if type == "Passenger"
-      train = PassengerTrain.new(number,type,carriage)
+    if type == "passenger"
+      train = PassengerTrain.new(number, carriage)
       puts "Пассажирский поезд создан!"
-    elsif type == "Cargo"
-      train = Cargo_Train.new(number,carriage)
+    elsif type == "cargo"
+      train = CargoTrain.new(number, carriage)
       puts "Грузовой поезд создан!"
-    else "Введите корректные данные"
+    else
+      puts "Введите корректные данные"
     end
-    system('clear')
-    show_menu
+    @trains << train
   end
 
   def new_station
     puts 'Введите название новой станции'
     station_name = gets.chomp
-    station_name = Station.new(station_name)
-    show_menu
+    @stations << Station.new(station_name)
+    puts 'Станция создана!'
   end
 
   def new_route
@@ -105,7 +129,6 @@ class Main
     puts "Введите название конечной станции"
     end_station = gets.chomp
     route_name = Route.new(start_station, end_station)
-    show_menu
   end
 
   def set_route_to_train
@@ -119,19 +142,18 @@ class Main
     else
       puts "Такой поезд или маршрут не существует."
     end
-    show_menu
   end
 
   def add_carriage_to_train
-    puts "Введите название поезда"
-    train = gets.chomp
-    if
-      @trains.include?(train)
-      @trains[train].add_carriage
-    else
-      puts "Такой поезд не существует."
+    @trains.each_with_index do |train, index|
+      puts train
+      puts index
     end
-    show_menu
+    puts 'Выберите поезд'
+    index = gets.chomp.to_f
+    train = @trains[index]
+    wagon = Wagon.new(train.type)
+    train.add_carriage(wagon)
   end
 
   def remove_carriage_to_train
@@ -164,12 +186,6 @@ class Main
       @trains[train].move_backward
     else
       puts "Такой поезд не существует."
-    end
-  end
-
-
-  def show_menu
-    loop do main_menu
     end
   end
 end

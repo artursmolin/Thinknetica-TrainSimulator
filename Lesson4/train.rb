@@ -1,13 +1,14 @@
 require './route.rb'
 require './station.rb'
 class Train
-  attr_reader :speed
+  attr_reader :speed, :type
 
-  def initialize(number,type,quantity)
+  def initialize(number,type,carriage)
     @number = number
     @type = type
-    @quantity = quantity.to_f
+    @quantity = carriage.to_f
     @speed = 0
+    @wagons = []
   end
 
   def start(speed)
@@ -22,15 +23,15 @@ class Train
     @speed = 0
   end
 
-  def carriage_quantity
+  def carriage
     puts "Кол-во вагонов в составе:#{@quantity}"
   end
 
-  def add_carriage
-    if @speed <= 0
-      @quantity += 1
+  def add_carriage(wagon)
+    if wagon.type == self.type
+      @wagons << wagon
     else
-      puts "Поезд на ходу"
+      puts 'Тип вагона не совпадает с типом поезда'
     end
   end
 
