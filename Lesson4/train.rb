@@ -6,7 +6,7 @@ class Train
   def initialize(number,type,carriage)
     @number = number
     @type = type
-    @quantity = carriage.to_f
+    @carriage = carriage.to_f
     @speed = 0
     @wagons = []
   end
@@ -24,23 +24,21 @@ class Train
   end
 
   def carriage
-    puts "Кол-во вагонов в составе:#{@quantity}"
+    puts "Кол-во вагонов в составе:#{@carriage}"
   end
 
   def add_carriage(wagon)
     if wagon.type == self.type
       @wagons << wagon
+    puts "Вагон #{wagon.type} прицеплен!"
     else
       puts 'Тип вагона не совпадает с типом поезда'
     end
   end
 
   def remove_carriage
-    if @speed <= 0
-      @quantity -= 1
-    else
-      puts "Поезд на ходу"
-    end
+    @wagons.delete(wagon)
+    puts "Вагон типа отцеплен!"
   end
 
   def set_route(route)

@@ -23,6 +23,7 @@ class Main
   def initialize
     @trains = []
     @stations = []
+    @route_list = []
   end
 
   def start
@@ -79,9 +80,9 @@ class Main
       puts "Введите 2, вывести список текущих станций"
       choice = gets.chomp
       if choice == "1"
-        puts @trains
+        trains_info
       elsif choice == "2"
-        puts @stations
+        stations_info
       end
     elsif choice == "0"
             main_menu
@@ -93,21 +94,20 @@ class Main
   private
 
   def new_train
-
     puts "Введите название поезда"
     train = gets.chomp
     puts "Введите номер поезда"
     number = gets.chomp
     puts "Введите кол-во вагонов"
     carriage = gets.chomp
-    puts "Выберите тип позда: Passenger или Cargo"
+    puts "Выберите тип позда: passenger или cargo"
     type = gets.chomp
     if type == "passenger"
+      puts "Пассажирский поезд:#{train},номер поезда:#{number},кол-во вагонов:#{carriage} создан!"
       train = PassengerTrain.new(number, carriage)
-      puts "Пассажирский поезд создан!"
     elsif type == "cargo"
+      puts "Грузовой поезд:#{train},номер поезда:#{number},кол-во вагонов:#{carriage} создан!"
       train = CargoTrain.new(number, carriage)
-      puts "Грузовой поезд создан!"
     else
       puts "Введите корректные данные"
     end
@@ -115,33 +115,44 @@ class Main
   end
 
   def new_station
+    @route_list.each_with_index do |route, index|
+      puts route
+      puts index
+    end
+    puts 'Выберите маршрут'
+    index = gets.chomp.to_f
+    route = @route_list[index]
     puts 'Введите название новой станции'
     station_name = gets.chomp
-    @stations << Station.new(station_name)
+    station = Station.new(station_name)
+    @stations << station
+    route.add_station(station)
     puts 'Станция создана!'
   end
 
   def new_route
-    puts "Введите название маршрута"
-    route_name = gets.chomp
     puts "Введите название начальной станции"
     start_station = gets.chomp
     puts "Введите название конечной станции"
     end_station = gets.chomp
-    route_name = Route.new(start_station, end_station)
+    @route_list << Route.new(start_station, end_station)
   end
 
   def set_route_to_train
-    puts "Введите название поезда"
-    train = gets.chomp
-    puts "Введите название маршрута"
-    route_name = gets.chomp
-    if
-      @trains.include?(train) && @route_list.include?(route_name)
-      @trains[train].set_route(route_name)
-    else
-      puts "Такой поезд или маршрут не существует."
+    @trains.each_with_index do |train, index|
+      puts train
+      puts index
     end
+    puts 'Выберите поезд'
+    index = gets.chomp.to_f
+    train = @trains[index]
+    @route_list.each_with_index do |route, index|
+      puts route
+      puts index
+    end
+    puts 'Выберите маршрут'
+    index = gets.chomp.to_f
+    train.set_route(@route_list[index])
   end
 
   def add_carriage_to_train
@@ -157,35 +168,50 @@ class Main
   end
 
   def remove_carriage_to_train
-    puts "Введите название поезда"
-    train = gets.chomp
-    if
-      @trains.include?(train)
-      @trains[train].remove_carriage
-    else
-      puts "Такой поезд не существует."
+    @trains.each_with_index do |train, index|
+      puts train
+      puts index
+      puts carriage
     end
+    puts 'Выберите поезд'
+    index = gets.chomp.to_f
+    train = @trains[index]
   end
 
   def move_forward_train
-    puts "Введите название поезда"
-    train = gets.chomp
-    if
-      @trains.include?(train)
-      @trains[train].move_forward
-    else
-      puts "Такой поезд не существует."
+    @trains.each_with_index do |train, index|
+      puts train
+      puts index
     end
+    puts 'Выберите поезд'
+    index = gets.chomp.to_f
+    train = @trains[index]
+    train.move_forward
   end
 
   def move_backward_train
-    puts "Введите название поезда"
-    train = gets.chomp
-    if
-      @trains.include?(train)
-      @trains[train].move_backward
-    else
-      puts "Такой поезд не существует."
+    @trains.each_with_index do |train, index|
+      puts train
+      puts index
     end
+    puts 'Выберите поезд'
+    index = gets.chomp.to_f
+    train = @trains[index]
+    train.move_backward
+  end
+
+  def trains_info
+      @trains.each_with_index do |train, index, carriage, type|
+        puts "Индекс поезда: #{index}"
+        puts "Тип поезда: #{train.type}"
+        puts train.carriage
+      end
+  end
+
+  def stations_info
+      @stations.each_with_index do |station, index, station_name|
+        puts "Индекс станции: #{index}"
+        puts "Название станции: #{station}"
+      end
   end
 end
