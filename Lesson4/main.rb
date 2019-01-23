@@ -43,6 +43,7 @@ class Main
       puts "Введите 1, если вы хотите создать новый поезд"
       puts "Введите 2, если вы хотите создать новую станцию"
       puts "Введите 3, если вы хотите создать новый маршрут"
+      puts "Введите 4, если вы хотите удалить станцию"
       choice = gets.chomp
         if choice == "1"
           new_train
@@ -50,6 +51,8 @@ class Main
           new_station
         elsif choice == "3"
           new_route
+        elsif choice == "4"
+          delete_station
         end
     elsif choice == "2"
       puts "Работа с существующими объектами"
@@ -130,6 +133,17 @@ class Main
     puts 'Станция создана!'
   end
 
+  def delete_station
+    @stations.each_with_index do |station, index|
+      puts station
+      puts index
+    end
+    puts 'Выберите станцию'
+    index = gets.chomp.to_f
+    station = @stations[index]
+    @stations.delete(station)
+  end
+
   def new_route
     puts "Введите название начальной станции"
     start_station = gets.chomp
@@ -171,11 +185,11 @@ class Main
     @trains.each_with_index do |train, index|
       puts train
       puts index
-      puts carriage
     end
     puts 'Выберите поезд'
     index = gets.chomp.to_f
     train = @trains[index]
+
   end
 
   def move_forward_train

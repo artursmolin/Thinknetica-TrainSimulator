@@ -24,7 +24,7 @@ class Train
   end
 
   def carriage
-    puts "Кол-во вагонов в составе:#{@carriage}"
+    puts "Кол-во вагонов в составе:#{@wagons}"
   end
 
   def add_carriage(wagon)
