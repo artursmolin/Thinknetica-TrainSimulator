@@ -36,9 +36,13 @@ class Train
     end
   end
 
-  def remove_carriage(wagon)
-    @wagons.delete(wagon)
-    puts "Вагон типа отцеплен!"
+  def remove_carriage
+    if @wagons.size > 0
+      @wagons.delete_at(0)
+      puts "Вагон отцеплен!"
+    else
+      puts "Вагоны отсутствуют!"
+    end
   end
 
   def set_route(route)

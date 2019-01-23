@@ -197,7 +197,7 @@ class Main
     puts 'Выберите поезд'
     index = gets.chomp.to_f
     train = @trains[index]
-    @wagons.remove_carriage
+    train.remove_carriage
   end
 
   def move_forward_train
