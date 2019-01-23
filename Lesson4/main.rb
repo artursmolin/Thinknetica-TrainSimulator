@@ -102,15 +102,23 @@ class Main
     puts "Введите номер поезда"
     number = gets.chomp
     puts "Введите кол-во вагонов"
-    carriage = gets.chomp
+    quantity = gets.chomp
     puts "Выберите тип позда: passenger или cargo"
     type = gets.chomp
     if type == "passenger"
-      puts "Пассажирский поезд:#{train},номер поезда:#{number},кол-во вагонов:#{carriage} создан!"
-      train = PassengerTrain.new(number, carriage)
+      puts "Пассажирский поезд:#{train},номер поезда:#{number},кол-во вагонов:#{quantity} создан!"
+      train = PassengerTrain.new(number, quantity)
+      quantity.to_i.times do
+        wagon = PassengerWagon.new(train.type)
+        train.add_carriage(wagon)
+      end
     elsif type == "cargo"
-      puts "Грузовой поезд:#{train},номер поезда:#{number},кол-во вагонов:#{carriage} создан!"
-      train = CargoTrain.new(number, carriage)
+      puts "Грузовой поезд:#{train},номер поезда:#{number},кол-во вагонов:#{quantity} создан!"
+      train = CargoTrain.new(number, quantity.to_f)
+      quantity.to_i.times do
+        wagon = CargoWagon.new(train.type)
+        train.add_carriage(wagon)
+      end
     else
       puts "Введите корректные данные"
     end
@@ -189,7 +197,7 @@ class Main
     puts 'Выберите поезд'
     index = gets.chomp.to_f
     train = @trains[index]
-
+    @wagons.remove_carriage
   end
 
   def move_forward_train

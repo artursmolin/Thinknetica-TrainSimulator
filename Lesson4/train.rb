@@ -1,7 +1,7 @@
 require './route.rb'
 require './station.rb'
 class Train
-  attr_reader :speed, :type
+  attr_reader :speed, :type, :route
 
   def initialize(number,type,carriage)
     @number = number
@@ -36,7 +36,7 @@ class Train
     end
   end
 
-  def remove_carriage
+  def remove_carriage(wagon)
     @wagons.delete(wagon)
     puts "Вагон типа отцеплен!"
   end
