@@ -3,10 +3,10 @@ require './station.rb'
 class Train
   attr_reader :speed, :type, :route
 
-  def initialize(number,type,carriage)
+  def initialize(number,type, carriage)
     @number = number
     @type = type
-    @carriage = carriage.to_f
+    @carriage = 0
     @speed = 0
     @wagons = []
   end
@@ -24,7 +24,7 @@ class Train
   end
 
   def carriage
-    puts "Кол-во вагонов в составе:#{@wagons}"
+    puts "Кол-во вагонов в составе:#{@wagons.length}"
   end
 
   def add_carriage(wagon)

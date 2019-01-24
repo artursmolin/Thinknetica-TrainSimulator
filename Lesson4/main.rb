@@ -19,6 +19,7 @@
 
 
 class Main
+  attr_reader :wagons
 
   def initialize
     @trains = []
@@ -101,24 +102,15 @@ class Main
     train = gets.chomp
     puts "Введите номер поезда"
     number = gets.chomp
-    puts "Введите кол-во вагонов"
-    quantity = gets.chomp
     puts "Выберите тип позда: passenger или cargo"
     type = gets.chomp
+    carriage = 0
     if type == "passenger"
-      puts "Пассажирский поезд:#{train},номер поезда:#{number},кол-во вагонов:#{quantity} создан!"
-      train = PassengerTrain.new(number, quantity)
-      quantity.to_i.times do
-        wagon = PassengerWagon.new(train.type)
-        train.add_carriage(wagon)
-      end
+      puts "Пассажирский поезд:#{train},номер поезда:#{number}!"
+      train = PassengerTrain.new(number, carriage)
     elsif type == "cargo"
-      puts "Грузовой поезд:#{train},номер поезда:#{number},кол-во вагонов:#{quantity} создан!"
-      train = CargoTrain.new(number, quantity.to_f)
-      quantity.to_i.times do
-        wagon = CargoWagon.new(train.type)
-        train.add_carriage(wagon)
-      end
+      puts "Грузовой поезд:#{train},номер поезда:#{number}"
+      train = CargoTrain.new(number, carriage)
     else
       puts "Введите корректные данные"
     end
@@ -161,10 +153,7 @@ class Main
   end
 
   def set_route_to_train
-    @trains.each_with_index do |train, index|
-      puts train
-      puts index
-    end
+    show_trains
     puts 'Выберите поезд'
     index = gets.chomp.to_f
     train = @trains[index]
@@ -174,14 +163,12 @@ class Main
     end
     puts 'Выберите маршрут'
     index = gets.chomp.to_f
-    train.set_route(@route_list[index])
+    route = @route_list[index]
+    train.set_route(route)
   end
 
   def add_carriage_to_train
-    @trains.each_with_index do |train, index|
-      puts train
-      puts index
-    end
+    show_trains
     puts 'Выберите поезд'
     index = gets.chomp.to_f
     train = @trains[index]
@@ -190,10 +177,7 @@ class Main
   end
 
   def remove_carriage_to_train
-    @trains.each_with_index do |train, index|
-      puts train
-      puts index
-    end
+    show_trains
     puts 'Выберите поезд'
     index = gets.chomp.to_f
     train = @trains[index]
@@ -201,10 +185,7 @@ class Main
   end
 
   def move_forward_train
-    @trains.each_with_index do |train, index|
-      puts train
-      puts index
-    end
+    show_trains
     puts 'Выберите поезд'
     index = gets.chomp.to_f
     train = @trains[index]
@@ -212,10 +193,7 @@ class Main
   end
 
   def move_backward_train
-    @trains.each_with_index do |train, index|
-      puts train
-      puts index
-    end
+    show_trains
     puts 'Выберите поезд'
     index = gets.chomp.to_f
     train = @trains[index]
@@ -223,17 +201,25 @@ class Main
   end
 
   def trains_info
-      @trains.each_with_index do |train, index, carriage, type|
-        puts "Индекс поезда: #{index}"
-        puts "Тип поезда: #{train.type}"
-        puts train.carriage
-      end
+    @trains.each_with_index do |train, index, carriage, type|
+      puts "Индекс поезда: #{index}"
+      puts "Тип поезда: #{train.type}"
+      carriage
+      puts train.carriage
+    end
   end
 
   def stations_info
-      @stations.each_with_index do |station, index, station_name|
-        puts "Индекс станции: #{index}"
-        puts "Название станции: #{station}"
-      end
+    @stations.each_with_index do |station, index, station_name|
+      puts "Индекс станции: #{index}"
+      puts "Название станции: #{station}"
+    end
+  end
+
+  def show_trains
+    @trains.each_with_index do |train, index|
+      puts train
+      puts index
+    end
   end
 end
