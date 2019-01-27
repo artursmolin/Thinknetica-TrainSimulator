@@ -1,14 +1,10 @@
   class Station
-<<<<<<< HEAD
   attr_reader :train
   include Instances
 
   def self.all
     puts @stations
   end
-=======
-  attr_reader :station_list,:train
->>>>>>> 840f7a1a8c87e79c7dea95c264348a28d8fe2d96
 
   def initialize(station_name)
     @station_name = station_name
