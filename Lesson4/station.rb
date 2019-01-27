@@ -1,9 +1,15 @@
-class Station
-  attr_reader :station_list,:train
+  class Station
+  attr_reader :train
+  include Instances
+
+  def self.all
+    puts @stations
+  end
 
   def initialize(station_name)
     @station_name = station_name
     @trains = []
+    self.class.register_instances
   end
 
   def train_arrive(train)

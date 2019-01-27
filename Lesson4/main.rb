@@ -1,25 +1,10 @@
-=begin
-Разделить поезда на два типа PassengerTrain и CargoTrain, сделать родителя для классов, который будет содержать общие методы и свойства
-Определить, какие методы могут быть помещены в private/protected и вынести их в такую секцию. В комментарии к методу обосновать, почему он был вынесен в private/protected
-Вагоны теперь делятся на грузовые и пассажирские (отдельные классы). К пассажирскому поезду можно прицепить только пассажирские, к грузовому - грузовые.
-При добавлении вагона к поезду, объект вагона должен передаваться как аругмент метода и сохраняться во внутреннем массиве поезда, в отличие от предыдущего задания, где мы считали только кол-во вагонов. Параметр конструктора "кол-во вагонов" при этом можно удалить.
-
-Добавить текстовый интерфейс:
-
-Создать программу в файле main.rb, которая будет позволять пользователю через текстовый интерфейс делать следующее:
-     - Создавать станции
-     - Создавать поезда
-     - Создавать маршруты и управлять станциями в нем (добавлять, удалять)
-     - Назначать маршрут поезду
-     - Добавлять вагоны к поезду
-     - Отцеплять вагоны от поезда
-     - Перемещать поезд по маршруту вперед и назад
-     - Просматривать список станций и список поездов на станции
-=end
-
+require_relative 'instances.rb'
 
 class Main
   attr_reader :wagons
+  include Instances::ClassMethods
+  extend Instances::InstanceMethods
+  include Manufacturer
 
   def initialize
     @trains = []
@@ -61,6 +46,8 @@ class Main
       puts "Введите 2, если вы хотите добавить вагон к поезду"
       puts "Введите 3, если вы хотите отцепить вагон от поезда"
       puts "Введите 4, если вы хотите переместить поезд"
+      puts "Введите 5, если вы хотите установить производителя для поезда"
+      puts "Введите 6, если вы хотите узнать производителя поезда"
       choice = gets.chomp
         if choice == "1"
           set_route_to_train
@@ -77,6 +64,10 @@ class Main
             elsif choice == "2"
               move_backward_train
             end
+        elsif choice == "5"
+              set_manufacturer_train
+        elsif choice == "6"
+              get_manufacturer_train
         end
     elsif choice == "3"
       puts "Вывод текущих данных об объектах"
@@ -109,7 +100,7 @@ class Main
       puts "Пассажирский поезд:#{train},номер поезда:#{number}!"
       train = PassengerTrain.new(number, carriage)
     elsif type == "cargo"
-      puts "Грузовой поезд:#{train},номер поезда:#{number}"
+      puts "Грузовой поезд:#{train},номер поезда:#{number}!"
       train = CargoTrain.new(number, carriage)
     else
       puts "Введите корректные данные"
@@ -204,7 +195,7 @@ class Main
     @trains.each_with_index do |train, index, carriage, type|
       puts "Индекс поезда: #{index}"
       puts "Тип поезда: #{train.type}"
-      carriage
+      puts train.manufacturer_name
       puts train.carriage
     end
   end
@@ -221,5 +212,23 @@ class Main
       puts train
       puts index
     end
+  end
+
+  def set_manufacturer_train
+    show_trains
+    puts 'Выберите поезд'
+    index = gets.chomp.to_f
+    puts "Введите название производителя поезда"
+    name = gets.chomp
+    train = @trains[index]
+    train.set_manufacturer(name)
+  end
+
+  def get_manufacturer_train
+    show_trains
+    puts 'Выберите поезд'
+    index = gets.chomp.to_f
+    train = @trains[index]
+    train.manufacturer_name
   end
 end

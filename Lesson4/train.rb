@@ -1,16 +1,26 @@
-require './route.rb'
-require './station.rb'
+require_relative 'instances.rb'
+require_relative 'manufacturer.rb'
+
 class Train
   attr_reader :speed, :type, :route
+  include Instances::ClassMethods
+  extend Instances::InstanceMethods
+  include Manufacturer
 
-  def initialize(number,type, carriage)
+  def self.find(number)
+    @@trains[number]
+  end
+
+  def initialize(number, type, carriage)
     @number = number
     @type = type
     @carriage = 0
     @speed = 0
     @wagons = []
+    @manufacturer = ""
+    self.class.register_instances
   end
-
+  
   def start(speed)
     @speed = speed
   end
@@ -75,8 +85,11 @@ class Train
     station_by_index @index_current_station + 1
   end
 
-  protected
+  def train_instances
+    instanses
+  end
 
+  protected
   def station_by_index(index)
     return nil if index < 0
     @route.route_list[index]

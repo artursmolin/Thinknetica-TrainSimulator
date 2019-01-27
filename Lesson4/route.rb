@@ -3,6 +3,7 @@ class Route
 
   def initialize(start_station,end_station)
 	  @route_list = [start_station, end_station]
+    self.class.register_instances
   end
 
   def add_station(station)
