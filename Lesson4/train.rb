@@ -1,11 +1,11 @@
-require_relative 'instances.rb'
 require_relative 'manufacturer.rb'
+require_relative 'instances.rb'
 
 class Train
   attr_reader :speed, :type, :route
-  include Instances::ClassMethods
-  extend Instances::InstanceMethods
   include Manufacturer
+  extend Instances::ClassMethods
+  include Instances::InstanceMethods
 
   def self.find(number)
     @@trains[number]
@@ -18,9 +18,9 @@ class Train
     @speed = 0
     @wagons = []
     @manufacturer = ""
-    self.class.register_instances
+    register_instances
   end
-  
+
   def start(speed)
     @speed = speed
   end

@@ -2,8 +2,8 @@ require_relative 'instances.rb'
 
   class Station
   attr_reader :train
-  include Instances::ClassMethods
-  extend Instances::InstanceMethods
+  extend Instances::ClassMethods
+  include Instances::InstanceMethods
 
   def self.all
     puts @stations
@@ -12,7 +12,7 @@ require_relative 'instances.rb'
   def initialize(station_name)
     @station_name = station_name
     @trains = []
-    self.class.register_instances
+    register_instances
     puts "Станция создана!"
   end
 

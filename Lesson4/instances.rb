@@ -1,17 +1,17 @@
 module Instances
-
   module ClassMethods
-    attr_accessor :instances
+    def instances
+      @instances ||=0
+    end
 
-    def self.instances
-      @@instances
+    def increase_instances
+      @instances ||=0
+      @instances +=1
     end
   end
-
   module InstanceMethods
-      def register_instances
-        @@instances ||= 0
-        @@instances += 1
-      end
+    def register_instances
+      self.class.increase_instances
+    end
   end
 end

@@ -2,12 +2,12 @@ require_relative 'instances.rb'
 
 class Route
   attr_reader :route_list,:start_station,:end_station
-  include Instances::ClassMethods
-  extend Instances::InstanceMethods
+  extend Instances::ClassMethods
+  include Instances::InstanceMethods
 
   def initialize(start_station,end_station)
 	  @route_list = [start_station, end_station]
-    self.class.register_instances
+    register_instances
     puts "Маршрут создан!"
   end
 

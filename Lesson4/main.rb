@@ -2,8 +2,6 @@ require_relative 'instances.rb'
 
 class Main
   attr_reader :wagons
-  include Instances::ClassMethods
-  extend Instances::InstanceMethods
   include Manufacturer
 
   def initialize
@@ -99,13 +97,16 @@ class Main
     if type == "passenger"
       puts "Пассажирский поезд:#{train},номер поезда:#{number}!"
       train = PassengerTrain.new(number, carriage)
+      puts "Kol-vo passenger train: #{PassengerTrain.instances}"
     elsif type == "cargo"
       puts "Грузовой поезд:#{train},номер поезда:#{number}!"
       train = CargoTrain.new(number, carriage)
+      puts "Kol-vo cargo train: #{CargoTrain.instances}"
     else
       puts "Введите корректные данные"
     end
     @trains << train
+
   end
 
   def new_station
@@ -121,6 +122,7 @@ class Main
     station = Station.new(station_name)
     @stations << station
     route.add_station(station)
+    puts "Kol-vo station: #{Station.instances}"
     puts 'Станция создана!'
   end
 
@@ -141,6 +143,7 @@ class Main
     puts "Введите название конечной станции"
     end_station = gets.chomp
     @route_list << Route.new(start_station, end_station)
+    puts "Kol-vo routes: #{Route.instances}"
   end
 
   def set_route_to_train
