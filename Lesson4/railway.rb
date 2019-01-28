@@ -8,5 +8,6 @@ require_relative 'wagon.rb'
 require_relative 'cargo_wagon.rb'
 require_relative 'passenger_wagon.rb'
 
+
 railway = Main.new
 railway.start

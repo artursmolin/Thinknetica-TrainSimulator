@@ -1,8 +1,5 @@
-require_relative 'instances.rb'
-
 class Main
   attr_reader :wagons
-  include Manufacturer
 
   def initialize
     @trains = []

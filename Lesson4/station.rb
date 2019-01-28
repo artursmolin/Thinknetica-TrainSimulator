@@ -1,6 +1,6 @@
 require_relative 'instances.rb'
 
-  class Station
+class Station
   attr_reader :train
   extend Instances::ClassMethods
   include Instances::InstanceMethods
