@@ -1,5 +1,9 @@
+require_relative 'valid.rb'
+
 class Main
+  include Valid
   attr_reader :wagons
+  NUMBER_FORMAT = /^[\w|\d]{3}-?[\w|\d]{2}$/
 
   def initialize
     @trains = []
@@ -99,11 +103,13 @@ class Main
       puts "Грузовой поезд:#{train},номер поезда:#{number}!"
       train = CargoTrain.new(number, carriage)
       puts "Kol-vo cargo train: #{CargoTrain.instances}"
-    else
-      puts "Введите корректные данные"
     end
     @trains << train
+  end
 
+  def validate!
+    raise "Number can't be nil" if @number.nil? or @number.length.zero?
+    raise "Wrong number format" if @number !~ NUMBER_FORMAT
   end
 
   def new_station

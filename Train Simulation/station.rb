@@ -1,4 +1,5 @@
 require_relative 'instances.rb'
+require_relative 'valid.rb'
 
 class Station
   attr_reader :train
@@ -12,8 +13,13 @@ class Station
   def initialize(station_name)
     @station_name = station_name
     @trains = []
+    validate!
     register_instances
     puts "Станция создана!"
+  end
+
+  def validate!
+    raise "Station name can't be nil" if @station_name.nil? or @station_name.length.zero?
   end
 
   def train_arrive(train)
