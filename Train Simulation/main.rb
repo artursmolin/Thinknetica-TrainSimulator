@@ -31,7 +31,15 @@ class Main
       puts "Введите 4, если вы хотите удалить станцию"
       choice = gets.chomp
         if choice == "1"
-          new_train
+          attemps = 0
+          begin
+            new_train
+          rescue => e
+            attemps += 1
+            puts "Exception:#{e.message}"
+            puts "Ваши данные неверны. Введите данные еще раз. Использованных попыток #{attemps}"
+            retry if attemps < 3
+          end
         elsif choice == "2"
           new_station
         elsif choice == "3"
@@ -86,7 +94,6 @@ class Main
   end
 
   private
-
   def new_train
     puts "Введите название поезда"
     train = gets.chomp
@@ -96,20 +103,16 @@ class Main
     type = gets.chomp
     carriage = 0
     if type == "passenger"
-      puts "Пассажирский поезд:#{train},номер поезда:#{number}!"
       train = PassengerTrain.new(number, carriage)
+      puts "Пассажирский поезд:#{train},номер поезда:#{number} создан!"
       puts "Kol-vo passenger train: #{PassengerTrain.instances}"
     elsif type == "cargo"
-      puts "Грузовой поезд:#{train},номер поезда:#{number}!"
       train = CargoTrain.new(number, carriage)
+      puts "Грузовой поезд:#{train},номер поезда:#{number} создан!"
       puts "Kol-vo cargo train: #{CargoTrain.instances}"
+    elsif raise "Wrong type of train!"
     end
     @trains << train
-  end
-
-  def validate!
-    raise "Number can't be nil" if @number.nil? or @number.length.zero?
-    raise "Wrong number format" if @number !~ NUMBER_FORMAT
   end
 
   def new_station

@@ -26,7 +26,7 @@ class Train
   end
 
   def validate!
-    raise "Number can't be nil" if @number.nil? or @number.length.zero?
+    raise "Number can't be nil" if @number.nil? || @number.length.zero?
     raise "Wrong number format" if !correct_number?
   end
 
