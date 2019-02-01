@@ -19,7 +19,7 @@ class Station
   end
 
   def validate!
-    raise "Station name can't be nil" if @station_name.nil? or @station_name.length.zero?
+    raise "Station name must be 3 and more characters" if @station_name.nil? or @station_name.length < 3
   end
 
   def train_arrive(train)

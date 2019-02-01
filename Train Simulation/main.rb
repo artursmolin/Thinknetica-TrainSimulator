@@ -146,9 +146,14 @@ class Main
   def new_route
     puts "Введите название начальной станции"
     start_station = gets.chomp
+    start_route = Station.new(start_station)
     puts "Введите название конечной станции"
     end_station = gets.chomp
-    @route_list << Route.new(start_station, end_station)
+    end_route = Station.new(end_station)
+    raise "NO!" if start_route.class != Station && end_route.class != Station
+    @route_list << Route.new(start_route, end_route)
+    @stations << start_route
+    @stations << end_route
     puts "Kol-vo routes: #{Route.instances}"
   end
 
