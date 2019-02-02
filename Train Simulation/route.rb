@@ -6,29 +6,28 @@ class Route
   include Instances::InstanceMethods
 
   def initialize(start_route,end_route)
-    @route_list = [start_route, end_route]
+    @stations = [start_route, end_route]
     validate!
     register_instances
     puts "Маршрут создан!"
   end
 
   def validate!
-    raise "Start station name can't be nil" if @route_list[0].nil?
-    raise "End station name can't be nil" if @route_list[1].nil?
-    raise "End station and Start station can't have same names" if @route_list[0] == @route_list[1]
+    raise "End station and Start station can't have same names" if @stations[0] == @stations[1]
+    raise "This is not Station object" if @stations.all? { |station| station.class != Station }
   end
 
   def add_station(station)
     validate!
     raise "Wrong class" if station.class != Station
-	  @route_list.insert(-2, station)
+	  @stations.insert(-2, station)
   end
 
   def delete_station(station)
-	  @route_list.delete(station)
+	  @stations.delete(station)
   end
 
   def show_stations
-    @route_list
+    @stations
   end
 end

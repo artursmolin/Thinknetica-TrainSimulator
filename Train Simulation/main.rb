@@ -150,10 +150,9 @@ class Main
     puts "Введите название конечной станции"
     end_station = gets.chomp
     end_route = Station.new(end_station)
-    raise "NO!" if start_route.class != Station && end_route.class != Station
-    @route_list << Route.new(start_route, end_route)
     @stations << start_route
     @stations << end_route
+    @route_list << Route.new(start_route, end_route)
     puts "Kol-vo routes: #{Route.instances}"
   end
 
