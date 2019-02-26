@@ -10,6 +10,7 @@ class Train
   include Instances::InstanceMethods
   include Valid
 
+
   def self.find(number)
     @@trains[number]
   end
@@ -67,7 +68,6 @@ class Train
   def set_route(route)
     @route = route
     @index_current_station = 0
-    current_station.train_arrive(self)
   end
 
   def move_forward
@@ -87,7 +87,8 @@ class Train
   end
 
   def current_station
-    station_by_index @index_current_station
+    raise 'No route loaded, no current station' unless @route
+    @route.stations[@index_current_station]
   end
 
   def next_station
@@ -101,10 +102,12 @@ class Train
   protected
   def station_by_index(index)
     return nil if index < 0
-    @route.route_list[index]
+    @route.stations[index]
   end
 
   def correct_number?
     NUMBER_FORMAT.match(@number).nil? ?  false : true
   end
+
+
 end

@@ -6,13 +6,16 @@ class Station
   extend Instances::ClassMethods
   include Instances::InstanceMethods
 
+  @@stations = []
+
   def self.all
-    puts @stations
+    puts @@stations
   end
 
   def initialize(station_name)
     @station_name = station_name
     @trains = []
+    @@stations << self
     validate!
     register_instances
     puts "Станция создана!"
@@ -36,5 +39,9 @@ class Station
 
   def trains
 	  puts @trains
+  end
+
+  def each_train(&block)
+    @trains.each { |train| yield(train) }
   end
 end

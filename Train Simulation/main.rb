@@ -22,6 +22,7 @@ class Main
     puts "Введите 1, если вы хотите создать поезд, станцию или маршрут"
     puts "Введите 2, если вы хотите работать с созданными объектами"
     puts "Введите 3, если вы хотите вывести текущие данные об объектах"
+    puts "Введите 4, если вы хотите вывести текущие данные об объектах"
     choice = gets.chomp
     if choice == "1"
       puts "Создание объекта"
@@ -55,6 +56,8 @@ class Main
       puts "Введите 4, если вы хотите переместить поезд"
       puts "Введите 5, если вы хотите установить производителя для поезда"
       puts "Введите 6, если вы хотите узнать производителя поезда"
+      puts "Введите 7, если хотите добавить загрузить грузовой вагон или занять место в пассажирском"
+      puts "Введите 8, если хотите получить информацию о поездах на станции"
       choice = gets.chomp
         if choice == "1"
           set_route_to_train
@@ -75,6 +78,8 @@ class Main
               set_manufacturer_train
         elsif choice == "6"
               get_manufacturer_train
+        elsif choice == "7"
+              load_wagon
         end
     elsif choice == "3"
       puts "Вывод текущих данных об объектах"
@@ -84,8 +89,10 @@ class Main
       if choice == "1"
         trains_info
       elsif choice == "2"
-        stations_info
+        train_list_on_station_detail
       end
+    elsif choice == "4"
+      create_test_data
     elsif choice == "0"
             main_menu
     elsif choice == "exit"
@@ -176,7 +183,13 @@ class Main
     puts 'Выберите поезд'
     index = gets.chomp.to_f
     train = @trains[index]
-    wagon = Wagon.new(train.type)
+    if train.type == :cargo
+      puts 'Введите максимальный объем вагона'
+    elsif train.type == :passenger
+      puts 'Введите кол-во посадочных мест'
+    end
+    amount = gets.chomp
+    wagon = Wagon.new(train.type, amount)
     train.add_carriage(wagon)
   end
 
@@ -244,4 +257,58 @@ class Main
     train = @trains[index]
     train.manufacturer_name
   end
+
+  def trains_info
+    show_trains
+    puts 'Выберите поезд'
+    index = gets.chomp.to_f
+    train = @trains[index]
+    i = 0
+    train.each_wagon do |wagon|
+      i += 1
+      if wagon.type == :cargo
+        puts "Номер вагона:#{i}, Тип:#{wagon.type}, Кол-во занятого объема:#{wagon.cargo_loaded}, Кол-во свободного объема:#{wagon.cargo_empty}"
+      else
+        puts "Номер вагона:#{i}, Тип:#{wagon.type}, Кол-во занятых мест:#{wagon.passenger_loaded}, Кол-во свободных мест:#{wagon.passenger_empty}."
+      end
+    end
+  end
+
+  def create_test_data
+    station_1 = Station.new('Москва')
+    station_2 = Station.new('Санкт-Петербург')
+    station_3 = Station.new('Тверь')
+    @stations << station_1
+    @stations << station_2
+    @stations << station_3
+    route_1 = Route.new(station_1, station_2)
+    route_2 = Route.new(station_1, station_3)
+    train_1 = CargoTrain.new('333-aa', "0")
+    train_2 = PassengerTrain.new('333-bb', "0")
+    @trains << train_1
+    @trains << train_2
+    train_1.add_carriage(CargoWagon.new(50))
+    train_1.add_carriage(CargoWagon.new(70))
+    train_1.add_carriage(CargoWagon.new(90))
+    train_2.add_carriage(PassengerWagon.new(20))
+    train_2.add_carriage(PassengerWagon.new(40))
+    puts "Создано: 3 станции, 2 маршрута, 2 поезда, 5 вагонов (3 и 2, соответственно)."
+  end
+
+  def main_each_train(station)
+    station.each_train do |train|
+      puts "Поезд номер '#{train.number}'; Тип '#{train.type}'; Кол-во вагонов '#{train.wagons.size}'."
+      main_each_wagon(train)
+    end
+  end
+
+  def train_list_on_station_detail
+  return puts "Станции не созданы." if @stations.empty?
+
+  @stations.each do |station, station_name|
+    puts "На станции '#{station}' стоят поезда:"
+    main_each_train(station)
+  end
+end
+
 end
