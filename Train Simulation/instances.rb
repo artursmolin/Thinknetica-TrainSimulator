@@ -1,12 +1,12 @@
 module Instances
   module ClassMethods
     def instances
-      @instances ||=0
+      @instances ||= 0
     end
 
     def increase_instances
-      @instances ||=0
-      @instances +=1
+      @instances ||= 0
+      @instances += 1
     end
   end
   module InstanceMethods

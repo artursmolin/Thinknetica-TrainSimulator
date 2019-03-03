@@ -3,32 +3,31 @@ require_relative 'instances.rb'
 require_relative 'valid.rb'
 
 class Train
-  NUMBER_FORMAT = /^[\w|\d]{3}-?[\w|\d]{2}$/
+  NUMBER_FORMAT = /^[\w|\d]{3}-?[\w|\d]{2}$/.freeze
   attr_reader :speed, :type, :route
   include Manufacturer
   extend Instances::ClassMethods
   include Instances::InstanceMethods
   include Valid
 
-
   def self.find(number)
     @@trains[number]
   end
 
-  def initialize(number, type, carriage)
+  def initialize(number, type, _carriage)
     @number = number
     @type = type
     validate!
     @carriage = 0
     @speed = 0
     @wagons = []
-    @manufacturer = ""
+    @manufacturer = ''
     register_instances
   end
 
   def validate!
     raise "Number can't be nil" if @number.nil? || @number.length.zero?
-    raise "Wrong number format" if !correct_number?
+    raise 'Wrong number format' unless correct_number?
   end
 
   def start(speed)
@@ -48,20 +47,20 @@ class Train
   end
 
   def add_carriage(wagon)
-    if wagon.type == self.type
+    if wagon.type == type
       @wagons << wagon
-    puts "Вагон #{wagon.type} прицеплен!"
+      puts "Вагон #{wagon.type} прицеплен!"
     else
       puts 'Тип вагона не совпадает с типом поезда'
     end
   end
 
   def remove_carriage
-    if @wagons.size > 0
+    if !@wagons.empty?
       @wagons.delete_at(0)
-      puts "Вагон отцеплен!"
+      puts 'Вагон отцеплен!'
     else
-      puts "Вагоны отсутствуют!"
+      puts 'Вагоны отсутствуют!'
     end
   end
 
@@ -88,6 +87,7 @@ class Train
 
   def current_station
     raise 'No route loaded, no current station' unless @route
+
     @route.stations[@index_current_station]
   end
 
@@ -100,14 +100,14 @@ class Train
   end
 
   protected
+
   def station_by_index(index)
     return nil if index < 0
+
     @route.stations[index]
   end
 
   def correct_number?
-    NUMBER_FORMAT.match(@number).nil? ?  false : true
+    NUMBER_FORMAT.match(@number).nil? ? false : true
   end
-
-
 end

@@ -6,7 +6,7 @@ class Wagon
 
   def initialize(type, amount)
     @type = type
-    @manufacturer = ""
+    @manufacturer = ''
     @amount = amount
   end
 end

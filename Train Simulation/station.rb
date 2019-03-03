@@ -18,11 +18,11 @@ class Station
     @@stations << self
     validate!
     register_instances
-    puts "Станция создана!"
+    puts 'Станция создана!'
   end
 
   def validate!
-    raise "Station name must be 3 and more characters" if @station_name.nil? or @station_name.length < 3
+    raise 'Station name must be 3 and more characters' if @station_name.nil? || (@station_name.length < 3)
   end
 
   def train_arrive(train)
@@ -30,7 +30,7 @@ class Station
   end
 
   def train_left(train)
-	  @trains.delete(train)
+    @trains.delete(train)
   end
 
   def trains_by_type(type)
@@ -38,10 +38,10 @@ class Station
   end
 
   def trains
-	  puts @trains
+    puts @trains
   end
 
-  def each_train(&block)
+  def each_train
     @trains.each { |train| yield(train) }
   end
 end
