@@ -1,7 +1,9 @@
 require_relative 'valid.rb'
+require_relative 'text_menu.rb'
 
 class Main
   include Valid
+  include TextMenu
   attr_reader :wagons
   NUMBER_FORMAT = /^[\w|\d]{3}-?[\w|\d]{2}$/.freeze
 
@@ -18,29 +20,13 @@ class Main
   end
 
   def main_menu
-    puts 'Привет! Это классная симуляция железной дороги. Что ты хочешь сделать?'
-    puts 'Введите 1, если вы хотите создать поезд, станцию или маршрут'
-    puts 'Введите 2, если вы хотите работать с созданными объектами'
-    puts 'Введите 3, если вы хотите вывести текущие данные об объектах'
-    puts 'Введите 4, если вы хотите вывести текущие данные об объектах'
+    text_menu_1
     choice = gets.chomp
     if choice == '1'
-      puts 'Создание объекта'
-      puts 'Введите 1, если вы хотите создать новый поезд'
-      puts 'Введите 2, если вы хотите создать новую станцию'
-      puts 'Введите 3, если вы хотите создать новый маршрут'
-      puts 'Введите 4, если вы хотите удалить станцию'
+      text_menu_2
       choice = gets.chomp
       if choice == '1'
-        attemps = 0
-        begin
-          new_train
-        rescue StandardError => e
-          attemps += 1
-          puts "Exception:#{e.message}"
-          puts "Ваши данные неверны. Введите данные еще раз. Использованных попыток #{attemps}"
-          retry if attemps < 3
-        end
+        rescue_method
       elsif choice == '2'
         new_station
       elsif choice == '3'
@@ -49,15 +35,7 @@ class Main
         delete_station
       end
     elsif choice == '2'
-      puts 'Работа с существующими объектами'
-      puts 'Введите 1, если вы хотите назначить маршруту поезд'
-      puts 'Введите 2, если вы хотите добавить вагон к поезду'
-      puts 'Введите 3, если вы хотите отцепить вагон от поезда'
-      puts 'Введите 4, если вы хотите переместить поезд'
-      puts 'Введите 5, если вы хотите установить производителя для поезда'
-      puts 'Введите 6, если вы хотите узнать производителя поезда'
-      puts 'Введите 7, если хотите добавить загрузить грузовой вагон или занять место в пассажирском'
-      puts 'Введите 8, если хотите получить информацию о поездах на станции'
+      text_menu_3
       choice = gets.chomp
       if choice == '1'
         set_route_to_train
@@ -66,8 +44,7 @@ class Main
       elsif choice == '3'
         remove_carriage_to_train
       elsif choice == '4'
-        puts 'Введите 1, если хотите переместить поезд на станцию вперед'
-        puts 'Введите 2, если хотите переместить поезд на станцию назад'
+        text_menu_4
         choice = gets.chomp
         if choice == '1'
           move_forward_train
@@ -75,16 +52,14 @@ class Main
           move_backward_train
         end
       elsif choice == '5'
-        set_manufacturer_train
+        push_manufacturer_train
       elsif choice == '6'
-        get_manufacturer_train
+        manufacturer_train
       elsif choice == '7'
         load_wagon
       end
     elsif choice == '3'
-      puts 'Вывод текущих данных об объектах'
-      puts 'Введите 1, вывести список текущих поездов'
-      puts 'Введите 2, вывести список текущих станций'
+      text_menu_5
       choice = gets.chomp
       if choice == '1'
         trains_info
@@ -169,9 +144,9 @@ class Main
     puts 'Выберите поезд'
     index = gets.chomp.to_f
     train = @trains[index]
-    @route_list.each_with_index do |route, index|
+    @route_list.each_with_index do |route, x|
       puts route
-      puts index
+      puts x
     end
     puts 'Выберите маршрут'
     index = gets.chomp.to_f
@@ -218,15 +193,6 @@ class Main
     train.move_backward
   end
 
-  def trains_info
-    @trains.each_with_index do |train, index, _carriage, _type|
-      puts "Индекс поезда: #{index}"
-      puts "Тип поезда: #{train.type}"
-      puts train.manufacturer_name
-      puts train.carriage
-    end
-  end
-
   def stations_info
     @stations.each_with_index do |station, index, _station_name|
       puts "Индекс станции: #{index}"
@@ -241,17 +207,17 @@ class Main
     end
   end
 
-  def set_manufacturer_train
+  def push_manufacturer_train
     show_trains
     puts 'Выберите поезд'
     index = gets.chomp.to_f
     puts 'Введите название производителя поезда'
     name = gets.chomp
     train = @trains[index]
-    train.set_manufacturer(name)
+    train.push_manufacturer(name)
   end
 
-  def get_manufacturer_train
+  def manufacturer_train
     show_trains
     puts 'Выберите поезд'
     index = gets.chomp.to_f
@@ -268,37 +234,45 @@ class Main
     train.each_wagon do |wagon|
       i += 1
       if wagon.type == :cargo
-        puts "Номер вагона:#{i}, Тип:#{wagon.type}, Кол-во занятого объема:#{wagon.cargo_loaded}, Кол-во свободного объема:#{wagon.cargo_empty}"
+        puts "Номер вагона:#{i}, Тип:#{wagon.type},
+        Кол-во занятого объема:#{wagon.cargo_loaded},
+        Кол-во свободного объема:#{wagon.cargo_empty}"
       else
-        puts "Номер вагона:#{i}, Тип:#{wagon.type}, Кол-во занятых мест:#{wagon.passenger_loaded}, Кол-во свободных мест:#{wagon.passenger_empty}."
+        puts "Номер вагона:#{i}, Тип:#{wagon.type},
+        Кол-во занятых мест:#{wagon.passenger_loaded},
+        Кол-во свободных мест:#{wagon.passenger_empty}."
       end
     end
   end
 
   def create_test_data
-    station_1 = Station.new('Москва')
-    station_2 = Station.new('Санкт-Петербург')
-    station_3 = Station.new('Тверь')
-    @stations << station_1
-    @stations << station_2
-    @stations << station_3
-    route_1 = Route.new(station_1, station_2)
-    route_2 = Route.new(station_1, station_3)
-    train_1 = CargoTrain.new('333-aa', '0')
-    train_2 = PassengerTrain.new('333-bb', '0')
-    @trains << train_1
-    @trains << train_2
-    train_1.add_carriage(CargoWagon.new(50))
-    train_1.add_carriage(CargoWagon.new(70))
-    train_1.add_carriage(CargoWagon.new(90))
-    train_2.add_carriage(PassengerWagon.new(20))
-    train_2.add_carriage(PassengerWagon.new(40))
-    puts 'Создано: 3 станции, 2 маршрута, 2 поезда, 5 вагонов (3 и 2, соответственно).'
+    station1 = Station.new('Москва')
+    station2 = Station.new('Санкт-Петербург')
+    station3 = Station.new('Тверь')
+    @stations << station1
+    @stations << station2
+    @stations << station3
+    route1 = Route.new(station1, station2)
+    route2 = Route.new(station1, station3)
+  end
+
+  def create_trains_data
+    train1 = CargoTrain.new('333-aa', '0')
+    train2 = PassengerTrain.new('333-bb', '0')
+    @trains << train1
+    @trains << train2
+    train1.add_carriage(CargoWagon.new(50))
+    train1.add_carriage(CargoWagon.new(70))
+    train1.add_carriage(CargoWagon.new(90))
+    train2.add_carriage(PassengerWagon.new(20))
+    train2.add_carriage(PassengerWagon.new(40))
+    puts 'Создано 3 станции, 2 маршрута, 2 поезда, 5 вагонов'
   end
 
   def main_each_train(station)
     station.each_train do |train|
-      puts "Поезд номер '#{train.number}'; Тип '#{train.type}'; Кол-во вагонов '#{train.wagons.size}'."
+      puts "Поезд номер '#{train.number}', Тип '#{train.type}',
+      Кол-во вагонов '#{train.wagons.size}'."
       main_each_wagon(train)
     end
   end
@@ -310,5 +284,17 @@ class Main
       puts "На станции '#{station}' стоят поезда:"
       main_each_train(station)
     end
-end
+  end
+
+  def rescue_method
+    attemps = 0
+    begin
+      new_train
+    rescue StandardError => e
+      attemps += 1
+      puts "Exception:#{e.message}"
+      puts "Введите данные еще раз. Использованных попыток #{attemps}"
+      retry if attemps < 3
+    end
+  end
 end

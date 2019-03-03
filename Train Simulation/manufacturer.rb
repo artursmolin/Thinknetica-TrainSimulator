@@ -1,5 +1,5 @@
 module Manufacturer
-  def set_manufacturer(name)
+  def push_manufacturer(name)
     @manufacturer = name
   end
 
