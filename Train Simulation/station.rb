@@ -6,8 +6,6 @@ class Station
   extend Instances::ClassMethods
   include Instances::InstanceMethods
 
-  @@stations = []
-
   def self.all
     puts @@stations
   end
@@ -15,7 +13,8 @@ class Station
   def initialize(station_name)
     @station_name = station_name
     @trains = []
-    @@stations << self
+    @stations = []
+    @stations << self
     validate!
     register_instances
     puts 'Станция создана!'
