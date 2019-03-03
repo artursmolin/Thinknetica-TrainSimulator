@@ -64,14 +64,15 @@ class Train
     end
   end
 
-  def set_route(route)
+  def push_route(route)
     @route = route
     @index_current_station = 0
   end
 
   def move_forward
     current_station.train_left(self)
-    @index_current_station += 1 if @route.route_list.size - 1 > @index_current_station
+    @index_current_station += 1 if
+    @route.route_list.size - 1 > @index_current_station
     current_station.train_arrive(self)
   end
 

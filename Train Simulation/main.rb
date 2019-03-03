@@ -139,7 +139,7 @@ class Main
     puts "Kol-vo routes: #{Route.instances}"
   end
 
-  def set_route_to_train
+  def push_route_to_train
     show_trains
     puts 'Выберите поезд'
     index = gets.chomp.to_f
@@ -151,7 +151,7 @@ class Main
     puts 'Выберите маршрут'
     index = gets.chomp.to_f
     route = @route_list[index]
-    train.set_route(route)
+    train.push_route(route)
   end
 
   def add_carriage_to_train

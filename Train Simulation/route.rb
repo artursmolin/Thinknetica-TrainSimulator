@@ -13,8 +13,9 @@ class Route
   end
 
   def validate!
-    raise "End station and Start station can't have same names" if @stations[0] == @stations[1]
-    raise 'This is not Station object' unless @stations.all? { |station| station.class == Station }
+    raise "Stations can't have same names" if @stations[0] == @stations[1]
+    raise 'This is not Station object' unless
+    @stations.all? { |station| station.class == Station }
   end
 
   def add_station(station)
