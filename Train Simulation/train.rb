@@ -4,13 +4,17 @@ require_relative 'validation.rb'
 require_relative 'accessors.rb'
 
 class Train
-  NUMBER_FORMAT = /^[\w|\d]{3}-?[\w|\d]{2}$/.freeze
+  FORMAT_NUMBER = /^[\w|\d]{3}-?[\w|\d]{2}$/.freeze
   attr_reader :speed, :type, :route
+  strong_attr_accessor :number, String
   include Manufacturer
   extend Instances::ClassMethods
   include Instances::InstanceMethods
   include Validation
   extend Accessors
+
+  validate :name, :presence
+  validate :name, :format, FORMAT_NUMBER
 
   def self.find(number)
     @@trains[number]
@@ -25,11 +29,6 @@ class Train
     @wagons = []
     @manufacturer = ''
     register_instances
-  end
-
-  def validate!
-    raise "Number can't be nil" if @number.nil? || @number.length.zero?
-    raise 'Wrong number format' unless correct_number?
   end
 
   def start(speed)
@@ -110,7 +109,4 @@ class Train
     @route.stations[index]
   end
 
-  def correct_number?
-    NUMBER_FORMAT.match(@number).nil? ? false : true
-  end
 end
