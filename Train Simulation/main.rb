@@ -1,8 +1,10 @@
-require_relative 'valid.rb'
+require_relative 'validation.rb'
+require_relative 'accessors.rb'
 require_relative 'text_menu.rb'
 
 class Main
-  include Valid
+  include Validation
+  extend Accessors
   include TextMenu
   attr_reader :wagons
   NUMBER_FORMAT = /^[\w|\d]{3}-?[\w|\d]{2}$/.freeze

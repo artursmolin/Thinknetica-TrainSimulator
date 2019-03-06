@@ -1,6 +1,7 @@
 require_relative 'manufacturer.rb'
 require_relative 'instances.rb'
-require_relative 'valid.rb'
+require_relative 'validation.rb'
+require_relative 'accessors.rb'
 
 class Train
   NUMBER_FORMAT = /^[\w|\d]{3}-?[\w|\d]{2}$/.freeze
@@ -8,7 +9,8 @@ class Train
   include Manufacturer
   extend Instances::ClassMethods
   include Instances::InstanceMethods
-  include Valid
+  include Validation
+  extend Accessors
 
   def self.find(number)
     @@trains[number]

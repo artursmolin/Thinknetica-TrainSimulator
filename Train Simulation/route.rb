@@ -1,9 +1,13 @@
 require_relative 'instances.rb'
+require_relative 'validation.rb'
+require_relative 'accessors.rb'
 
 class Route
   attr_reader :route_list, :start_station, :end_station
   extend Instances::ClassMethods
   include Instances::InstanceMethods
+  include Validation
+  extend Accessors
 
   def initialize(start_route, end_route)
     @stations = [start_route, end_route]

@@ -1,10 +1,16 @@
 require_relative 'instances.rb'
-require_relative 'valid.rb'
+require_relative 'validation.rb'
+require_relative 'accessors.rb'
 
 class Station
   attr_reader :train
   extend Instances::ClassMethods
   include Instances::InstanceMethods
+  include Validation
+  extend Accessors
+
+  validate :name, :presence
+  validate :name, :type, String
 
   def self.all
     puts @@stations
