@@ -3,14 +3,16 @@ require_relative 'validation.rb'
 require_relative 'accessors.rb'
 
 class Station
+  FORMAT_NUMBER = /^[a-zа-я\d]{3}[-]?[a-zа-я\d]{2}$/i.freeze
+
   attr_reader :train
   extend Instances::ClassMethods
   include Instances::InstanceMethods
   include Validation
   extend Accessors
 
-  validate :name, :presence
-  validate :name, :type, String
+  validate :station_name, :presence
+  validate :station_name, :format, FORMAT_NUMBER
 
   def self.all
     puts @@stations
@@ -24,11 +26,6 @@ class Station
     validate!
     register_instances
     puts 'Станция создана!'
-  end
-
-  def validate!
-    raise 'Station name must be 3 and more characters' if
-    @station_name.nil? || (@station_name.length < 3)
   end
 
   def train_arrive(train)

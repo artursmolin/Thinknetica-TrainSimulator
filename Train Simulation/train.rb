@@ -5,13 +5,12 @@ require_relative 'accessors.rb'
 
 class Train
   FORMAT_NUMBER = /^[\w|\d]{3}-?[\w|\d]{2}$/.freeze
-  attr_reader :speed, :type, :route
-  strong_attr_accessor :number, String
   include Manufacturer
   extend Instances::ClassMethods
   include Instances::InstanceMethods
   include Validation
   extend Accessors
+  strong_attr_accessor :number, String
 
   validate :name, :presence
   validate :name, :format, FORMAT_NUMBER
@@ -20,14 +19,14 @@ class Train
     @@trains[number]
   end
 
-  def initialize(number, type, _carriage)
+  def initialize(number, type, carriage)
     @number = number
     @type = type
-    validate!
     @carriage = 0
     @speed = 0
     @wagons = []
     @manufacturer = ''
+    validate!
     register_instances
   end
 
