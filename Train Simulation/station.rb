@@ -11,8 +11,8 @@ class Station
   include Validation
   extend Accessors
 
-  validate :station_name, :presence
-  validate :station_name, :format, FORMAT_NUMBER
+  validate :name, :presence
+  validate :name, :format, FORMAT_NUMBER
 
   def self.all
     puts @@stations
