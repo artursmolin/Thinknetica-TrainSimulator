@@ -4,13 +4,14 @@ require_relative 'validation.rb'
 require_relative 'accessors.rb'
 
 class Train
-  FORMAT_NUMBER = /^[\w|\d]{3}-?[\w|\d]{2}$/.freeze
   include Manufacturer
   extend Instances::ClassMethods
   include Instances::InstanceMethods
   include Validation
   extend Accessors
   strong_attr_accessor :number, String
+
+  FORMAT_NUMBER = /^[\w|\d]{3}-?[\w|\d]{2}$/.freeze
 
   validate :name, :presence
   validate :name, :format, FORMAT_NUMBER
