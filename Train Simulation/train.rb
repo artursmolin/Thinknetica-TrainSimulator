@@ -105,7 +105,6 @@ class Train
 
   def station_by_index(index)
     return nil if index < 0
-
     @route.stations[index]
   end
 
