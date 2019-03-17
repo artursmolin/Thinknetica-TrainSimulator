@@ -11,21 +11,18 @@ class Player
 
   def get_name
     loop do
-      p 'Please introduce yourself.'
       player_name = gets.strip.chomp.capitalize
       self.name = player_name
-
       break unless player_name.length.zero?
     end
   end
 
   def take(cards)
-    hand.cards.concat cards
+    hand.cards.concat(cards)
   end
 
   def move(game)
     action = gets.strip.chomp.to_i
-
     if action == 2
       take game.deck.give_cards(1)
     elsif action == 3
@@ -38,7 +35,7 @@ class Player
   end
 
   def reset_cards
-    hand = Hand.new
+    self.hand = Hand.new
   end
 
   private

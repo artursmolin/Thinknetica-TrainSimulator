@@ -10,19 +10,29 @@ class Game
   end
 
   def start
-    player.get_name if player.name.nil?
+    p 'Please introduce yourself.'
+    player.get_name
+    loop do
+      main_game
+      finalize
+      reset_game
+      p "Let's play new Hand!"
+      p "____________________"
+    break if
+      player.bank.zero? || dealer.bank.zero?
+    end
+  end
+
+  def main_game
     renew_deck
-    message_panel.game_starting
+    game_starting
     send_starting_cards
     bet
-
     loop do
-      break if check_for_three_cards
-      break if player.ready_to_open?
       move
+    break if
+        check_for_three_cards or player.ready_to_open?
     end
-
-    finalize
   end
 
   private
@@ -32,8 +42,8 @@ class Game
   end
 
   def send_starting_cards
-    player.take deck.give_cards(2)
-    dealer.take deck.give_cards(2)
+    player.take(deck.give_cards(2))
+    dealer.take(deck.give_cards(2))
   end
 
   def bet
@@ -43,47 +53,63 @@ class Game
   end
 
   def move
-    message_panel.dashboard(player, dealer, self)
-    message_panel.move_menu
-
+    dashboard(player, dealer, self)
+    move_menu
     player.move self
-    message_panel.dashboard(player, dealer, self)
-
+    dashboard(player, dealer, self)
     message_from_dealer = dealer.move self
     p "Dealer is #{message_from_dealer}"
-    message_panel.dashboard(player, dealer, self)
+    dashboard(player, dealer, self)
   end
 
   def check_for_three_cards
-    player.hand.cards.count >= 3 && dealer.hand.cards.count >= 3
+    player.hand.cards.count > 4 && dealer.hand.cards.count > 4
+  end
+
+
+  def find_winner
+    player_score = player.hand.sum
+    dealer_score = dealer.hand.sum
+    if player_score <= 21 && dealer_score > 21 || dealer_score < player_score
+      winner = player
+      player.bank += 20
+    elsif dealer_score <= 21 && player_score > 21 || player_score < dealer_score
+      winner = dealer
+      dealer.bank += 20
+    end
+  end
+
+  def reset_game
+    self.bank = 0
+    player.reset_cards
+    dealer.reset_cards
   end
 
   def finalize
     find_winner
     player.ready_to_open = false
-    return 'Game finished' if bank == 0
-    start
+    p 'Game finished' if player.bank.zero? || dealer.bank.zero?
   end
 
-  def find_winner
-    player_score = player.hand.sum
-    dealer_score = dealer.hand.sum
-    if player_score - 21 < dealer_score - 21
-      winner = player
-    else
-      winner = dealer
-    end
-    winner.bank += bank
-    p "WIN: #{winner.name}"
-    reset_game
+  def game_starting
+    p 'Game starting'
   end
 
-  def reset_game
-    self.bank = 0
-
-    player.reset_cards
-    dealer.reset_cards
+  def dashboard(player, dealer, game)
+    dealer_cards = dealer.hand.cards.count.times.map { '*' }
+    p "| Casino bank: #{game.bank}"
+    p "| Player cards: #{player.hand.cards.join(', ')} | bank: #{player.bank}"
+    p "| Dealer cards: #{dealer_cards.join(' ')} | bank: #{dealer.bank}"
   end
+
+  def move_menu
+    p '| Your turn:'
+    p '| 1. Pass'
+    p '| 2. Take card'
+    p '| 3. Open cards'
+  end
+
+  def ready_to_open_cards; end
 
   attr_writer :menu, :player, :deck, :dealer, :message_panel, :bank
 end
