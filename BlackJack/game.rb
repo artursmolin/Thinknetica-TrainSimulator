@@ -17,9 +17,9 @@ class Game
       finalize
       reset_game
       p "Let's play new Hand!"
-      p "____________________"
-    break if
-      player.bank.zero? || dealer.bank.zero?
+      p '____________________'
+      break if
+        player.bank.zero? || dealer.bank.zero?
     end
   end
 
@@ -30,8 +30,8 @@ class Game
     bet
     loop do
       move
-    break if
-        check_for_three_cards or player.ready_to_open?
+      break if
+          check_for_three_cards || player.ready_to_open?
     end
   end
 
@@ -65,7 +65,6 @@ class Game
   def check_for_three_cards
     player.hand.cards.count > 4 && dealer.hand.cards.count > 4
   end
-
 
   def find_winner
     player_score = player.hand.sum

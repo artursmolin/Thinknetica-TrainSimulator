@@ -10,7 +10,7 @@ dealer = Dealer.new
 
 game_params = {
   player: player,
-  dealer: dealer,
+  dealer: dealer
 }
 
 game = Game.new(game_params)
