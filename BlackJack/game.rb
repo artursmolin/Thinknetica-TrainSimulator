@@ -15,9 +15,15 @@ class Game
     loop do
       main_game
       finalize
-      reset_game
-      p "Let's play new Hand!"
-      p '____________________'
+      system("clear")
+      stop
+      p "D you want to play a new game? Put yes or no"
+      input = gets.chomp
+      if input == "yes"
+        reset_game
+      elsif input == "no"
+        raise "Exiting the program"
+      end
       break if
         player.bank.zero? || dealer.bank.zero?
     end
@@ -36,6 +42,14 @@ class Game
   end
 
   private
+
+  def stop
+    p "**********************************************"
+    p "Game results: "
+    p "Dealer: #{dealer.hand.cards.join(', ')}, points: #{player.hand.sum}, bank: #{dealer.bank}"
+    p "Player: #{player.hand.cards.join(', ')}, points: #{dealer.hand.sum}, bank: #{player.bank}"
+    p "***********************************************"
+  end
 
   def renew_deck
     self.deck = Deck.new
